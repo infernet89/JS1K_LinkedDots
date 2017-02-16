@@ -1,8 +1,7 @@
 
 var activeTask=setInterval(run, 33);
 var points=[];
-var connections=[];
-var connectionsColor=Create2DArray(4);
+var links=[];
 var level=4;
 for(i=0;i<4;i++)
 {
@@ -26,15 +25,30 @@ a.addEventListener("mousedown", function (e) {
 });
 a.addEventListener("mouseup", function (e) { clicked=false; draggingPoint=-1;});
 //START DEBUG
-connections[0]=[1,2,3];
-connections[1]=[2,3];
-connections[2]=[3];
-connectionsColor[0][1]="Blue";
-connectionsColor[0][2]="Blue";
-connectionsColor[0][3]="Blue";
-connectionsColor[1][2]="Blue";
-connectionsColor[1][3]="Blue";
-connectionsColor[2][3]="Blue";
+links[0]=new Object();
+links[0].from=0;
+links[0].to=1;
+links[0].c="Blue";
+links[1]=new Object();
+links[1].from=0;
+links[1].to=2;
+links[1].c="Blue";
+links[2]=new Object();
+links[2].from=0;
+links[2].to=3;
+links[2].c="Blue";
+links[3]=new Object();
+links[3].from=1;
+links[3].to=2;
+links[3].c="Blue";
+links[4]=new Object();
+links[4].from=1;
+links[4].to=3;
+links[4].c="Blue";
+links[5]=new Object();
+links[5].from=2;
+links[5].to=3;
+links[5].c="Blue";
 //END DEBUG
 function retta(primo,secondo,x)
 {
@@ -70,15 +84,6 @@ function indipendenti(a,b,a1,b1)
     return false;
   return true;
 }
-function Create2DArray(rows) {
-  var arr = [];
-
-  for (var i=0;i<rows;i++) {
-     arr[i] = [];
-  }
-
-  return arr;
-}
 function distance(ax,ay,bx,by)
 {
   return (ax-bx)*(ax-bx)+(ay-by)*(ay-by);
@@ -92,19 +97,16 @@ function drawPoint(x,y,color)
 }
 function drawAllConnections()
 {
-  for(i=0;i<level;i++)
+  c.lineWidth=2;
+  for(k in links)
   {
-    c.lineWidth=2;
-    for(k in connections[i])
-    {
-      c.strokeStyle=connectionsColor[i][k];
-
-      c.beginPath();
-      c.moveTo(points[i].x,points[i].y);
-      c.lineTo(points[connections[i][k]].x,points[connections[i][k]].y);
-      c.stroke();
-    }
+    c.strokeStyle=links[k].c;
+    c.beginPath();
+    c.moveTo(points[links[k].from].x,points[links[k].from].y);
+    c.lineTo(points[links[k].to].x,points[links[k].to].y);
+    c.stroke();
   }
+  return;
 }
 //controlla e colora
 function check()
@@ -127,24 +129,21 @@ function check()
     }
   }
   //reset colori
-  for(i=0;i<level;i++)
-    for(k in connections[i])
-      connectionsColor[i][k]="Blue";
+  for(k in links)
+    links[k].c="Blue";
   //collisioni dei link
-  for(i=0;i<level;i++)
-    for(k in connections[i])
-      for(j=0;j<level;j++)
-        for(l in connections[j])
-        { //i-k   j-l   i<k   j<l
-          if(i==j || i==connections[j][l] || connections[i][k]==j || connections[i][k]==connections[j][l])
-            continue; //se c'è un punto in comune, non possono collidere
-          if(!indipendenti(i,connections[i][k],j,connections[j][l]))
+  for(i in links)
+    for(k in links)
+    {
+      if(i==k || links[i].from==links[k].from || links[i].to==links[k].to || links[i].from==links[k].to || links[i].to==links[k].from)
+        continue;
+      if(!indipendenti(links[i].from, links[i].to, links[k].from, links[k].to))
           {
-            connectionsColor[i][k]="Red";
-            connectionsColor[j][l]="Red";
+            links[i].c="Red";
+            links[k].c="Red";
             allSafe=false;
           }
-        }
+    }
   return allSafe;
 }
 function run()
