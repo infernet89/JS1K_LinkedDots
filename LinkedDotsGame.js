@@ -36,6 +36,40 @@ connectionsColor[1][2]="Blue";
 connectionsColor[1][3]="Blue";
 connectionsColor[2][3]="Blue";
 //END DEBUG
+function retta(primo,secondo,x)
+{
+  var x1=points[primo].x;
+  var x2=points[secondo].x;
+  var y1=points[primo].y;
+  var y2=points[secondo].y;
+  if(x1==x2)
+    x1+=0.3;
+  return ((y2-y1) / (x2-x1))* (x-x1) + y1;
+}
+function over(p,yretta)
+{
+  if(points[p].y > yretta)
+    return 1;
+  if(points[p].y < yretta)
+    return -1;
+  return 0;
+}
+function indipendenti(a,b,a1,b1)
+{
+  //console.log("Controllo "+a+"-"+b+"  con  "+a1+"-"+b1);
+  var x = points[a].x;
+  var y = points[a].y;
+  var x1 = points[b].x;
+  var y1 = points[b].y;
+  var x2 = points[a1].x;
+  var y2 = points[a1].y;
+  var x3 = points[b1].x;
+  var y3 = points[b1].y;
+  //TRUST PAST ME.
+  if (over(a, retta(a1, b1, points[a].x)) + over(b, retta(a1, b1, points[b].x)) == 0 && over(a1, retta(a, b, points[a1].x)) + over(b1, retta(a, b, points[b1].x)) == 0)
+    return false;
+  return true;
+}
 function Create2DArray(rows) {
   var arr = [];
 
@@ -92,15 +126,19 @@ function check()
       }
     }
   }
+  //reset colori
+  for(i=0;i<level;i++)
+    for(k in connections[i])
+      connectionsColor[i][k]="Blue";
   //collisioni dei link
   for(i=0;i<level;i++)
     for(k in connections[i])
       for(j=0;j<level;j++)
         for(l in connections[j])
         { //i-k   j-l   i<k   j<l
-          if(i==j || i==l || k==j || k==l)
+          if(i==j || i==connections[j][l] || connections[i][k]==j || connections[i][k]==connections[j][l])
             continue; //se c'è un punto in comune, non possono collidere
-          if(!indipendenti(i,k,j,l))
+          if(!indipendenti(i,connections[i][k],j,connections[j][l]))
           {
             connectionsColor[i][k]="Red";
             connectionsColor[j][l]="Red";
@@ -123,42 +161,16 @@ function run()
   check();
   //Draw the points
   for(i=0;i<level;i++)
+  {
     drawPoint(points[i].x,points[i].y,points[i].color);
+    //DEBUG
+    c.font = "20px Arial";
+    c.fillStyle="White";
+    c.fillText(""+i,points[i].x-5,points[i].y+5);
+  }
+    
 
   drawAllConnections();
-}
-function retta(primo,secondo,x)
-{
-  var x1=points[primo].x;
-  var x2=points[secondo].x;
-  var y1=points[primo].y;
-  var y2=points[secondo].y;
-  if(x1==x2)
-    x1+=0.3;
-  return (y2-y1) / (x2-x1) * (x-x1) + y1;
-}
-function over(p,yretta)
-{
-  if(points[p].y > yretta)
-    return 1;
-  if(points[p].y < yretta)
-    return -1;
-  return 0;
-}
-function indipendenti(a,b,a1,b1)
-{
-  var x = points[a].x;
-  var y = points[a].y;
-  var x1 = points[b].x;
-  var y1 = points[b].y;
-  var x2 = points[a1].x;
-  var y2 = points[a1].y;
-  var x3 = points[b1].x;
-  var y3 = points[b1].y;
-  //TRUST PAST ME.
-  if (over(a, retta(a1, b1, points[a].x)) + this.over(b, retta(a1, b1, points[b].x)) == 0 && over(a1, retta(a, b, points[a1].x)) + over(b1, retta(a, b, points[b1].x)) == 0)
-    return false;
-  return true;
 }
 
 
