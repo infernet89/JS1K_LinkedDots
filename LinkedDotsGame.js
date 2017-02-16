@@ -1,5 +1,4 @@
-
-var activeTask=setInterval(run, 33);
+setInterval(run, 33);
 var points=[];
 var links=[];
 var level=4;
@@ -18,7 +17,7 @@ var draggingPoint=-1;
 a.addEventListener("mousemove", function (e) { mx=e.clientX; my=e.clientY;});
 a.addEventListener("mousedown", function (e) {
   clicked=true;
-  for(i=0;i<level;i++)
+  for(i in points)
     if( distance(points[i].x, points[i].y,mx,my) < 400)
       draggingPoint=i;
       
@@ -60,11 +59,11 @@ function retta(primo,secondo,x)
     x1+=0.3;
   return ((y2-y1) / (x2-x1))* (x-x1) + y1;
 }
-function over(p,yretta)
+function over(py,yretta)
 {
-  if(points[p].y > yretta)
+  if(py > yretta)
     return 1;
-  if(points[p].y < yretta)
+  if(py < yretta)
     return -1;
   return 0;
 }
@@ -80,7 +79,7 @@ function indipendenti(a,b,a1,b1)
   var x3 = points[b1].x;
   var y3 = points[b1].y;
   //TRUST PAST ME.
-  if (over(a, retta(a1, b1, points[a].x)) + over(b, retta(a1, b1, points[b].x)) == 0 && over(a1, retta(a, b, points[a1].x)) + over(b1, retta(a, b, points[b1].x)) == 0)
+  if (over(y, retta(a1, b1, x)) + over(y1, retta(a1, b1, x1)) == 0 && over(y2, retta(a, b, x2)) + over(y3, retta(a, b, x3)) == 0)
     return false;
   return true;
 }
@@ -113,10 +112,10 @@ function check()
 {
   var allSafe=true;
   //collisioni dei punti
-  for(i=0;i<level;i++)
+  for(i in points)
   {
     points[i].color="Blue";
-    for(k=0;k<level;k++)
+    for(k in points)
     {
       if(i==k)
         continue;
@@ -160,58 +159,8 @@ function run()
   check();
   //Draw the points
   for(i=0;i<level;i++)
-  {
     drawPoint(points[i].x,points[i].y,points[i].color);
-    //DEBUG
-    c.font = "20px Arial";
-    c.fillStyle="White";
-    c.fillText(""+i,points[i].x-5,points[i].y+5);
-  }
     
 
   drawAllConnections();
 }
-
-
-/*
- double retta(int primo, int secondo, double x) {
-        double x1 = punti[primo].getX();
-        double x2 = punti[secondo].getX();
-        double y1 = punti[primo].getY();
-        double y2 = punti[secondo].getY();
-        if (x2 == x1) {
-            x1 += 0.3;
-        }
-        double y = (y2 - y1) / (x2 - x1) * (x - x1) + y1;
-        return y;
-    }
-
-    int over(int punto, double ydellaretta) {
-        if ((double)punti[punto].getY() > ydellaretta) {
-            return 1;
-        }
-        if ((double)punti[punto].getY() < ydellaretta) {
-            return -1;
-        }
-        return 0;
-    }
-
-    boolean indipendenti(int a, int b, int a1, int b1) {
-        if (a == b || a == a1 || a == b1 || b == a1 || b == b1 || a1 == b1) {
-            return true;
-        }
-        double x = punti[a].getX();
-        double y = punti[a].getY();
-        double x1 = punti[b].getX();
-        double y1 = punti[b].getY();
-        double x2 = punti[a1].getX();
-        double y2 = punti[a1].getY();
-        double x3 = punti[b1].getX();
-        double y3 = punti[b1].getY();
-        double m = (y1 - y) / (x1 - x);
-        double m1 = (y3 - y2) / (x3 - x2);
-        if (this.over(a, this.retta(a1, b1, punti[a].getX())) + this.over(b, this.retta(a1, b1, punti[b].getX())) == 0 && this.over(a1, this.retta(a, b, punti[a1].getX())) + this.over(b1, this.retta(a, b, punti[b1].getX())) == 0) {
-            return false;
-        }
-        return true;
-    }*/
