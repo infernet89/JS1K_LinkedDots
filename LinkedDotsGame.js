@@ -28,8 +28,11 @@ function generateLevel()
     points.push({ x: Math.random()*a.width , y:y=Math.random()*a.height});
   //links
   for(i=0;i<level;i++)
+  {
+    from=links.length;
     for(k=i+1;k<level;k++)
       links.push({from: i, to: k});
+  }
 }
 function indipendenti(a,b,a1,b1)
 {
@@ -125,7 +128,12 @@ function run()
     points[draggingPoint].x=mx;
     points[draggingPoint].y=my;
   }
-  check();
+  if(check())
+  {
+    level++;
+    generateLevel();
+    document.title=level;
+  }
   //Draw the points
   for(i=0;i<level;i++)
     drawPoint(points[i].x,points[i].y,points[i].color);
