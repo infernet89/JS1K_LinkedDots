@@ -8,15 +8,15 @@ var my;
 var ck=0;
 var dp=-1;
 var ds=0;
-a.addEventListener("mousemove", function (e) { mx=e.clientX; my=e.clientY;});
-a.addEventListener("mousedown", function (e) {
+onmousemove=e=>{ mx=e.clientX; my=e.clientY;};
+onmousedown=e=>{
   ck=1;
   for(i in p)
     if( di(p[i].x, p[i].y,mx,my) < 400)
       dp=i;
       
-});
-a.addEventListener("mouseup", function (e) { ck=0; dp=-1;});
+};
+onmouseup=e=>{ ck=0; dp=-1;};
 function gl()
 {
   lvl++;
