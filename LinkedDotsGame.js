@@ -7,6 +7,7 @@ var mx;
 var my;
 var clicked=false;
 var draggingPoint=-1;
+var desperation=0;
 a.addEventListener("mousemove", function (e) { mx=e.clientX; my=e.clientY;});
 a.addEventListener("mousedown", function (e) {
   clicked=true;
@@ -28,11 +29,12 @@ function generateLevel()
     points.push({ x: Math.random()*a.width , y:y=Math.random()*a.height});
   //links
   for(i=0;i<level;i++)
-  {
-    from=links.length;
     for(k=i+1;k<level;k++)
       links.push({from: i, to: k});
-  }
+
+  for(k=4;k<level;k++)
+    for(i=k;i<level;i++)
+      links.splice(~~(Math.random()*links.length),1)
 }
 function indipendenti(a,b,a1,b1)
 {
@@ -140,4 +142,10 @@ function run()
     
 
   drawAllConnections();
+  //if you are desperated, we make the game easier
+  if(desperation++>1000)
+  {
+    desperation=0;
+    links.splice(~~(Math.random()*links.length),1)
+  }
 }
