@@ -49,16 +49,6 @@ links[5].from=2;
 links[5].to=3;
 links[5].c="Blue";
 //END DEBUG
-function over(n)
-{           //y3,x ,y ,x1,y1,x3
-  
-  //
-
-  if(n < 0)
-    return 1;
-  if(n > 0)
-    return -1;
-}
 function indipendenti(a,b,a1,b1)
 {
   //console.log("Controllo "+a+"-"+b+"  con  "+a1+"-"+b1);
@@ -72,11 +62,11 @@ function indipendenti(a,b,a1,b1)
   var y3 = points[b1].y;
   //TRUST PAST ME.
   if (
-    over((y3-y2) * (x1-x2) / (x3-x2+0.1) + y2 - y1) + 
-    over((y3-y2) * (x-x2 ) / (x3-x2+0.1) + y2 - y ) == 0 
+    ((y3-y2) * (x1-x2) / (x3-x2+0.1) + y2 - y1) / 
+    ((y3-y2) * (x-x2 ) / (x3-x2+0.1) + y2 - y ) < 0 
     && 
-    over((y1-y)  * (x2-x) /  (x1-x +0.1) + y  - y2) + 
-    over((y1-y)  * (x3-x) /  (x1-x +0.1) + y  - y3) == 0)
+    ((y1-y)  * (x2-x) /  (x1-x +0.1) + y  - y2) / 
+    ((y1-y)  * (x3-x) /  (x1-x +0.1) + y  - y3) < 0)
     return false;
   return true;
 }
