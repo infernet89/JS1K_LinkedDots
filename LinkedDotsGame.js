@@ -59,9 +59,9 @@ function di(ax,ay,bx,by)
 {
   return (ax-bx)*(ax-bx)+(ay-by)*(ay-by);
 }
-function dt(x,y,color)
+function dt(x,y,cl)
 {
-  c.fillStyle=color;
+  c.fillStyle=cl;
   c.beginPath();
   c.arc(x,y,15,0,6);
   c.fill();
@@ -79,27 +79,27 @@ function da()
   }
   return;
 }
-//controlla e colora
+//controlla e cla
 function ch()
 {
   s=1;
   //collisioni dei punti
   for(i in p)
   {
-    p[i].color="Blue";
+    p[i].cl="Blue";
     for(k in p)
     {
       if(i==k)
         continue;
       if(di(p[i].x,p[i].y,p[k].x,p[k].y)<400)
       {
-        p[i].color="Red";
+        p[i].cl="Red";
         s=0;
         break;
       }
     }
   }
-  //reset colori
+  //reset cli
   for(k in l)
     l[k].c="Blue";
   //collisioni dei link
@@ -132,7 +132,7 @@ function rn()
     gl();
   //Draw the p
   for(i=0;i<lvl;i++)
-    dt(p[i].x,p[i].y,p[i].color);
+    dt(p[i].x,p[i].y,p[i].cl);
     
 
   da();
