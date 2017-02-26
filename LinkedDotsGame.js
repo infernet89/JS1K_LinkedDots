@@ -2,7 +2,7 @@
 setInterval(run, 33);
 var points=[];
 var links=[];
-var level=4;
+var level=3;
 var mx;
 var my;
 var clicked=false;
@@ -17,11 +17,9 @@ a.addEventListener("mousedown", function (e) {
       
 });
 a.addEventListener("mouseup", function (e) { clicked=false; draggingPoint=-1;});
-//START DEBUG
-generateLevel()
-//END DEBUG
 function generateLevel()
 {
+  level++;
   points=[];
   links=[];
   //points
@@ -31,7 +29,7 @@ function generateLevel()
   for(i=0;i<level;i++)
     for(k=i+1;k<level;k++)
       links.push({from: i, to: k});
-
+  //make it solvable, kinda.
   for(k=4;k<level;k++)
     for(i=k;i<level;i++)
       links.splice(~~(Math.random()*links.length),1)
@@ -84,7 +82,7 @@ function drawAllConnections()
 //controlla e colora
 function check()
 {
-  var allSafe=true;
+  allSafe=true;
   //collisioni dei punti
   for(i in points)
   {
@@ -131,11 +129,7 @@ function run()
     points[draggingPoint].y=my;
   }
   if(check())
-  {
-    level++;
     generateLevel();
-    document.title=level;
-  }
   //Draw the points
   for(i=0;i<level;i++)
     drawPoint(points[i].x,points[i].y,points[i].color);
