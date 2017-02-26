@@ -1,3 +1,4 @@
+//< >
 setInterval(run, 33);
 var points=[];
 var links=[];
@@ -16,39 +17,20 @@ a.addEventListener("mousedown", function (e) {
 });
 a.addEventListener("mouseup", function (e) { clicked=false; draggingPoint=-1;});
 //START DEBUG
-for(i=0;i<4;i++)
-{
-  var tmp=new Object();
-  tmp.x=Math.random()*a.width;
-  tmp.y=Math.random()*a.height;
-  tmp.color="Blue"
-  points.push(tmp);
-}
-links[0]=new Object();
-links[0].from=0;
-links[0].to=1;
-links[0].c="Blue";
-links[1]=new Object();
-links[1].from=0;
-links[1].to=2;
-links[1].c="Blue";
-links[2]=new Object();
-links[2].from=0;
-links[2].to=3;
-links[2].c="Blue";
-links[3]=new Object();
-links[3].from=1;
-links[3].to=2;
-links[3].c="Blue";
-links[4]=new Object();
-links[4].from=1;
-links[4].to=3;
-links[4].c="Blue";
-links[5]=new Object();
-links[5].from=2;
-links[5].to=3;
-links[5].c="Blue";
+generateLevel()
 //END DEBUG
+function generateLevel()
+{
+  points=[];
+  links=[];
+  //points
+  for(i=0;i<level;i++)
+    points.push({ x: Math.random()*a.width , y:y=Math.random()*a.height});
+  //links
+  for(i=0;i<level;i++)
+    for(k=i+1;k<level;k++)
+      links.push({from: i, to: k});
+}
 function indipendenti(a,b,a1,b1)
 {
   //console.log("Controllo "+a+"-"+b+"  con  "+a1+"-"+b1);
@@ -62,10 +44,10 @@ function indipendenti(a,b,a1,b1)
   var y3 = points[b1].y;
   //TRUST PAST ME.
   if (
-    ((y3-y2) * (x1-x2) / (x3-x2+0.1) + y2 - y1) / 
+    ((y3-y2) * (x1-x2) / (x3-x2+0.1) + y2 - y1) * 
     ((y3-y2) * (x-x2 ) / (x3-x2+0.1) + y2 - y ) < 0 
     && 
-    ((y1-y)  * (x2-x) /  (x1-x +0.1) + y  - y2) / 
+    ((y1-y)  * (x2-x) /  (x1-x +0.1) + y  - y2) * 
     ((y1-y)  * (x3-x) /  (x1-x +0.1) + y  - y3) < 0)
     return false;
   return true;
