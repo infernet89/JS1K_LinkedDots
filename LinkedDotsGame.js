@@ -82,7 +82,7 @@ function da()
 //controlla e colora
 function ch()
 {
-  allSafe=1;
+  s=1;
   //collisioni dei punti
   for(i in p)
   {
@@ -94,7 +94,7 @@ function ch()
       if(di(p[i].x,p[i].y,p[k].x,p[k].y)<400)
       {
         p[i].color="Red";
-        allSafe=0;
+        s=0;
         break;
       }
     }
@@ -112,15 +112,15 @@ function ch()
           {
             l[i].c="Red";
             //l[k].c="Red";
-            allSafe=0;
+            s=0;
           }
     }
-  return allSafe;
+  return s;
 }
 function rn()
 {
 	//draw the background
-	c.fillStyle="Silver";
+	c.fillStyle="#aaa";
 	c.fillRect(0,0,a.width,a.height);
 
   if(ck && dp > -1)
