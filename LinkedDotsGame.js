@@ -28,7 +28,7 @@ function gl()
   //l
   for(i=0;i<lvl;i++)
     for(k=i+1;k<lvl;k++)
-      l.push({from: i, to: k});
+      l.push({f: i, to: k});
   //make it solvable, kinda.
   for(k=4;k<lvl;k++)
     for(i=k;i<lvl;i++)
@@ -73,7 +73,7 @@ function da()
   {
     c.strokeStyle=l[k].c;
     c.beginPath();
-    c.moveTo(p[l[k].from].x,p[l[k].from].y);
+    c.moveTo(p[l[k].f].x,p[l[k].f].y);
     c.lineTo(p[l[k].to].x,p[l[k].to].y);
     c.stroke();
   }
@@ -106,9 +106,9 @@ function ch()
   for(i in l)
     for(k in l)
     {
-      if(i==k || l[i].from==l[k].from || l[i].to==l[k].to || l[i].from==l[k].to || l[i].to==l[k].from)
+      if(i==k || l[i].f==l[k].f || l[i].to==l[k].to || l[i].f==l[k].to || l[i].to==l[k].f)
         continue;
-      if(!id(l[i].from, l[i].to, l[k].from, l[k].to))
+      if(!id(l[i].f, l[i].to, l[k].f, l[k].to))
           {
             l[i].c="Red";
             //l[k].c="Red";
