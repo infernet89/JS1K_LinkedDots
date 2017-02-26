@@ -2,14 +2,6 @@ setInterval(run, 33);
 var points=[];
 var links=[];
 var level=4;
-for(i=0;i<4;i++)
-{
-  var tmp=new Object();
-  tmp.x=Math.random()*a.width;
-  tmp.y=Math.random()*a.height;
-  tmp.color="Blue"
-  points.push(tmp);
-}
 var mx;
 var my;
 var clicked=false;
@@ -24,6 +16,14 @@ a.addEventListener("mousedown", function (e) {
 });
 a.addEventListener("mouseup", function (e) { clicked=false; draggingPoint=-1;});
 //START DEBUG
+for(i=0;i<4;i++)
+{
+  var tmp=new Object();
+  tmp.x=Math.random()*a.width;
+  tmp.y=Math.random()*a.height;
+  tmp.color="Blue"
+  points.push(tmp);
+}
 links[0]=new Object();
 links[0].from=0;
 links[0].to=1;
@@ -49,12 +49,8 @@ links[5].from=2;
 links[5].to=3;
 links[5].c="Blue";
 //END DEBUG
-function retta(primo,secondo,x)
+function retta(x1,y1,x2,y2,x)
 {
-  var x1=points[primo].x;
-  var x2=points[secondo].x;
-  var y1=points[primo].y;
-  var y2=points[secondo].y;
   if(x1==x2)
     x1+=0.3;
   return ((y2-y1) / (x2-x1))* (x-x1) + y1;
@@ -79,7 +75,7 @@ function indipendenti(a,b,a1,b1)
   var x3 = points[b1].x;
   var y3 = points[b1].y;
   //TRUST PAST ME.
-  if (over(y, retta(a1, b1, x)) + over(y1, retta(a1, b1, x1)) == 0 && over(y2, retta(a, b, x2)) + over(y3, retta(a, b, x3)) == 0)
+  if (over(y, retta(x2,y2,x3,y3,x)) + over(y1, retta(x2,y2,x3,y3,x1)) == 0 && over(y2, retta(x,y,x1,y1,x2)) + over(y3, retta(x,y,x1,y1,x3)) == 0)
     return false;
   return true;
 }
@@ -91,7 +87,7 @@ function drawPoint(x,y,color)
 {
   c.fillStyle=color;
   c.beginPath();
-  c.arc(x,y,15,0,2*Math.PI);
+  c.arc(x,y,15,0,6);
   c.fill();
 }
 function drawAllConnections()
@@ -139,7 +135,7 @@ function check()
       if(!indipendenti(links[i].from, links[i].to, links[k].from, links[k].to))
           {
             links[i].c="Red";
-            links[k].c="Red";
+            //links[k].c="Red";
             allSafe=false;
           }
     }
