@@ -49,19 +49,12 @@ links[5].from=2;
 links[5].to=3;
 links[5].c="Blue";
 //END DEBUG
-function retta(x1,y1,x2,y2,x)
+function over(py,x1,y1,x2,y2,x)
 {
-  if(x1==x2)
-    x1+=0.3;
-  return ((y2-y1) / (x2-x1))* (x-x1) + y1;
-}
-function over(py,yretta)
-{
-  if(py > yretta)
+  if(((y2-y1) / (x2-x1+0.1))* (x-x1) + y1 - py < 0)
     return 1;
-  if(py < yretta)
+  if(((y2-y1) / (x2-x1+0.1))* (x-x1) + y1 - py > 0)
     return -1;
-  return 0;
 }
 function indipendenti(a,b,a1,b1)
 {
@@ -75,7 +68,12 @@ function indipendenti(a,b,a1,b1)
   var x3 = points[b1].x;
   var y3 = points[b1].y;
   //TRUST PAST ME.
-  if (over(y, retta(x2,y2,x3,y3,x)) + over(y1, retta(x2,y2,x3,y3,x1)) == 0 && over(y2, retta(x,y,x1,y1,x2)) + over(y3, retta(x,y,x1,y1,x3)) == 0)
+  if (
+    over(y1, x2,y2,x3,y3,x1) + 
+    over(y , x2,y2,x3,y3,x ) == 0 
+    && 
+    over(y2, x,y,x1,y1,x2) + 
+    over(y3, x,y,x1,y1,x3) == 0)
     return false;
   return true;
 }
